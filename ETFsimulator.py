@@ -11,14 +11,16 @@ HistoryDataFile = "history.json"
 max_decrease = 0
 min_increase = 0
 
-def get_history_data(allcode, years, byFile=False):	
+def get_history_data(allcode, years, byFile=False):
+	res = {}
 	if byFile==True:
 		f = open(HistoryDataFile, 'r' ,encoding="utf8")
-		res = json.loads(f.read())
+		data = json.loads(f.read())
 		f.close()
+		for i in allcode:
+			res[i] = data[i]
 		return res
 	else:
-		res = {}
 		for i in allcode:
 			res[i] = []
 			for year in years:
@@ -81,7 +83,7 @@ def ETFsimulator(allcode, years):
 			value[i] += [temp]
 	print(value)
 	plot_data(years, data=list(value.values()),labels=list(value.keys()), title=u'历年投资指数的累计现值（基准为1.0）', show=False)
-	
+
 	#生成所有case，将100%分配给不同的指数
 	x = itertools.combinations_with_replacement(allcode.keys(), 10)
 	res = []
@@ -121,7 +123,7 @@ if __name__ == "__main__":
 				'能源':'000032', 	'地产':'000006', 	'工业':'000034',
 				'金融':'000038', 
 				'纳指': '513100', 	'标普': '513500', 	'恒指': '513600',
-				'国债':'000012', 	'黄金':'518800'
+				#'国债':'000012', 	'黄金':'518800'
 				}
 			#'上证':'000001', '深成指':'399001', '创业板': '159915', 
 			#'沪深300': '399300', '中证500': '000905', '上证50': '000016',
